@@ -9,7 +9,7 @@ Write-Host "PowerShell HTTP trigger function processed the request."
 $secret = [System.Environment]::GetEnvironmentVariable("ACCESS_TOKEN", [System.EnvironmentVariableTarget]::Process)
 
 if ($TriggerMetadata) {
-    Write-Host "Trigger Metadata: $($TriggerMetadata | Out-String)"
+    Write-Host "Trigger Metadata: $($TriggerMetadata | ConvertTo-Json)"
 }
 
 
