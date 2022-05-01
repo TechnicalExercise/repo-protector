@@ -8,8 +8,14 @@ Write-Host "PowerShell HTTP trigger function processed the request."
 
 $secret = [System.Environment]::GetEnvironmentVariable("ACCESS_TOKEN", [System.EnvironmentVariableTarget]::Process)
 
-if ($TriggerMetadata) {
-    Write-Host "Trigger Metadata: $($TriggerMetadata | ConvertTo-Json)"
+$client_payload = $TriggerMetadata | ConvertFrom-Json
+
+if ($client_payload.action -eq "created") {
+    $repo = $client_payload.repository.name
+    $owner = $client_payload.repository.owner.login
+    $branch = $client_payload.repository.default_branch
+
+    Write-Host "Setting policy for $owner/$repo : $branch"
 }
 
 
