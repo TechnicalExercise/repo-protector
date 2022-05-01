@@ -4,7 +4,18 @@ using namespace System.Net
 param($Request, $TriggerMetadata)
 
 # Write to the Azure Functions log stream.
-Write-Host "PowerShell HTTP trigger function processed a request."
+Write-Host "PowerShell HTTP trigger function processed the request."
+
+$secret = [System.Environment]::GetEnvironmentVariable("ACCESS_TOKEN", [System.EnvironmentVariableTarget]::Process)
+
+if ($TriggerMetadata) {
+    Write-Host "Trigger Metadata: $($TriggerMetadata | Out-String)"
+}
+
+
+
+
+
 
 # Interact with query parameters or the body of the request.
 $name = $Request.Query.Name
@@ -17,9 +28,11 @@ $body = "This HTTP triggered function executed successfully. Pass a name in the 
 if ($name) {
     $body = "Hello, $name. This HTTP triggered function executed successfully."
 }
+Write-Host $body
 
 # Associate values to output bindings by calling 'Push-OutputBinding'.
 Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
     StatusCode = [HttpStatusCode]::OK
     Body = $body
 })
+
