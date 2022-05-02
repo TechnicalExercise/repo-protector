@@ -20,15 +20,19 @@ if ($TriggerMetadata) {
         $branch = $TriggerMetadata.repository.default_branch
         $senderLogin = $TriggerMetadata.sender.login
 
-        Write-Host "Setting policy for $owner/$repo : $branch"
+        Write-Host "Dispatching ensure-reviews workflow"
+        Start-RepoProtectionWorkflow -Username $senderLogin -Token $secret -Owner $owner -Repo $repo -Branch $branch
 
-        $protectionTemplate = (Get-BranchProtection -Username $senderLogin -Token $secret -Owner $owner -Repo Template -Branch main)
 
-        Write-Host "Branch protection template: $protectionTemplate"
+        # Write-Host "Setting policy for $owner/$repo : $branch"
 
-        Set-DefaultBranchContent -Username $senderLogin -Token $secret -Owner $owner -Repo $repo
+        # $protectionTemplate = (Get-BranchProtection -Username $senderLogin -Token $secret -Owner $owner -Repo Template -Branch main)
 
-        $responseCode = Set-BranchProtection -Username $senderLogin -Token $secret -Owner $owner -Repo Template -Branch main -ProtectionTemplate $protectionTemplate
+        # Write-Host "Branch protection template: $protectionTemplate"
+
+        # Set-DefaultBranchContent -Username $senderLogin -Token $secret -Owner $owner -Repo $repo
+
+        # $responseCode = Set-BranchProtection -Username $senderLogin -Token $secret -Owner $owner -Repo Template -Branch main -ProtectionTemplate $protectionTemplate
     }
 }
 
